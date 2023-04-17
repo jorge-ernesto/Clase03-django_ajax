@@ -2,15 +2,16 @@ let ciudades = [];
 
 const listarCiudades = async (idPais) => {
     try {
-        const response = await fetch('./ciudades/${idPais}');
+        const response = await fetch(`./ciudades/${idPais}`);
         const data = await response.json();
 
         if (data.message === "Success") {
             ciudades = data.ciudades;
             let opciones = '';
             ciudades.forEach((ciudad) => {
-                opciones += '<option value="${ciudad.id}">${ciudad.nombre}</option>';
+                opciones += `<option value="${ciudad.id}">${ciudad.nombre}</option>`;
             });
+            // cboCiudad = document.getElementById("cboCiudad")
             cboCiudad.innerHTML = opciones;
             mostrarAlcalde(ciudades[0].id);
         } else {
@@ -29,8 +30,9 @@ const listarPaises = async () => {
         if (data.message === "Success") {
             let opciones = '';
             data.paises.forEach((pais) => {
-                opciones += '<option value="${pais.id}">${pais.nombre}</option>';
+                opciones += `<option value="${pais.id}">${pais.nombre}</option>`;
             });
+            // cboPais = document.getElementById("cboPais")
             cboPais.innerHTML = opciones;
             listarCiudades(data.paises[0].id);
         } else {
@@ -44,16 +46,19 @@ const listarPaises = async () => {
 const mostrarAlcalde = (idCiudad) => {
     let ciudadEncontrada = ciudades.filter((ciudad) => ciudad.id == idCiudad)[0];
     let alcalde = ciudadEncontrada.alcalde;
-    txtAlcalde.innerText = 'Alcalde: ${alcalde}';
+    // txtAlcalde = document.getElementById("txtAlcalde")
+    txtAlcalde.innerText = `Alcalde: ${alcalde}`;
 };
 
 const cargaInicial = async () => {
     await listarPaises();
 
+    // cboPais = document.getElementById("cboPais")
     cboPais.addEventListener("change", (event) => {
         listarCiudades(event.target.value);
     });
 
+    // cboCiudad = document.getElementById("cboCiudad")
     cboCiudad.addEventListener("change", (event) => {
         mostrarAlcalde(event.target.value);
     });
